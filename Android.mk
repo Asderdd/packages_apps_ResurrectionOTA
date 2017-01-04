@@ -2,7 +2,11 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 ifneq ($(ANDROID_BUILD_TOP),)
-    $(shell cp -u $(ANDROID_BUILD_TOP)/ota_conf $(LOCAL_PATH)/app/src/main/assets/)
+    ifneq ("$(wildcard $(ANDROID_BUILD_TOP)/ota_conf.$(PRODUCT_DEVICE))","")
+        $(shell cp -u $(ANDROID_BUILD_TOP)/ota_conf.$(PRODUCT_DEVICE) $(LOCAL_PATH)/app/src/main/assets/ota_conf)
+    else
+        $(shell cp -u $(ANDROID_BUILD_TOP)/ota_conf $(LOCAL_PATH)/app/src/main/assets/)
+    endif
 endif
 
 LOCAL_MODULE_TAGS := optional
